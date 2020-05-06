@@ -1,0 +1,8 @@
+.vscode
+.DS_Store
+.ipynb_checkpoints
+
+pycachesim-master
+__pycache__
+
+*.pyc
