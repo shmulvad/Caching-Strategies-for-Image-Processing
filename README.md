@@ -13,7 +13,7 @@ This repository contains the source code used for the bachelor thesis *Caching S
 * BlockArray
 * Standard row major array
 
-If you want to learn more about these, you are welcome to read the [thesis].
+If you want to learn more about these, you are welcome to read the thesis where they have been described in depth.
 
 ## Running the code
 
@@ -44,6 +44,5 @@ To test that the algorithms and data structures work as intended, a number of co
 * [Jon Sporring] for his excellent supervision with this project.
 * [pycachesim] for allowing to run the cache simulations.
 
-[thesis]: TODO-Upload-when-done
 [pycachesim]: https://github.com/RRZE-HPC/pycachesim
 [Jon Sporring]: https://github.com/sporring
