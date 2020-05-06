@@ -1,0 +1,6 @@
+Number of iters: 35
+
+C:      0.0941 s
+Python: 4.6958 s
+
+C was 49.9x faster
