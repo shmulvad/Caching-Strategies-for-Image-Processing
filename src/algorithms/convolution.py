@@ -38,7 +38,10 @@ def convolution_3d(picture, kernel):
         ret_data[x, y, z] = convolution_voxel(picture, kernel, kernel_dim, pad, x, y, z)
     return ret_data
 
+
 def convolution(picture, kernel):
+    assert picture.dim in [2, 3], \
+        f"Convolution for pictures of dim {picture.dim} not implemented"
     return convolution_2d(picture, kernel) \
            if picture.dim == 2 \
            else convolution_3d(picture, kernel)

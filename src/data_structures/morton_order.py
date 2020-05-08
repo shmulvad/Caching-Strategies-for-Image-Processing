@@ -118,14 +118,14 @@ class MortonOrder(CachingDataStructure):
         x = (x ^ (x << 1)) & 0x55555555  # x = -f-e -d-c -b-a -9-8 -7-6 -5-4 -3-2 -1-0
         return x
 
-    def morton_encode(self, key):
+    def morton_encode(self, key: tuple):
         """
         Given a key of type (x, y, z, etc.) (equal to dimension of encoding)
         it computes the morton encoding of these values
         """
         assert len(key) == self.dim, \
-            f"Number of args ({len(key)}) does not match up with internal \
-                dimension ({self.dim})."
+            f"Number of args ({len(key)}) does not match up with internal " + \
+            f"dimension ({self.dim})."
         val = 0
         for i in range(self.dim):
             val |= self.part_func(key[i]) << i

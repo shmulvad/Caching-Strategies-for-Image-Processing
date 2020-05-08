@@ -9,8 +9,8 @@ This repository contains the source code used for the bachelor thesis *Caching S
 * Fast Fourier Transform
 
 ### Data Structures
-* Morton Ordering
-* BlockArray
+* Morton ordering
+* Block array
 * Standard row major array
 
 If you want to learn more about these, you are welcome to read the thesis where they have been described in depth.
@@ -25,7 +25,7 @@ $ pip install pycachesim
 
 ### 
 
-The tests of performance itself and plots of the results are defined in the different `.ipynb`-files in the `src`-directory. As the performance tests can take quite a long time to run (8+ hours), the results have been saved in JSON format to the `src/results/`-folder.
+The tests of performance itself and plots of the results are defined in the different `.ipynb`-files in the `src`-directory. As the performance tests can take quite a long time to run (8+ hours on a modern computer), the results have been saved in JSON format to the `src/results/`-folder.
 
 When viewing the Notebooks, you can either simply glance over the already plotted results, load in the generated JSON and play with the data or, if you wish to generate the results anew, change the following line which is in the top of all the Notebooks:
 
@@ -41,7 +41,7 @@ To test that the algorithms and data structures work as intended, a number of co
 
 ## Credits
 
-* [Jon Sporring] for his excellent supervision with this project.
+* Professor [Jon Sporring] for his excellent supervision with this project.
 * [pycachesim] for allowing to run the cache simulations.
 
 [pycachesim]: https://github.com/RRZE-HPC/pycachesim

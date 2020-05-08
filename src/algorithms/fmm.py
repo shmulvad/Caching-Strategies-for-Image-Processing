@@ -22,6 +22,10 @@ class Neighbor(object):
         return f"Neighbor({self.min_val:.3f}, {self.coords}, {self.valid})"
 
     def __lt__(self, other):
+        """
+        Define the less than function between Neighbors.
+        Required to be able to use in min-heap
+        """
         return self.min_val < other.min_val
 
 
