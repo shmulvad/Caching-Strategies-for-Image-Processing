@@ -13,22 +13,30 @@ class BlockArray(CachingDataStructure):
             "You can't set *both* picture and shape"
         self.cache = cache
         self.offset = offset
-        self.S = S
         if picture is not None:
             picture = np.array(picture)
             self.dim = len(picture.shape)
             self.shape = picture.shape
+            self.__set_S__(S)
             self.__set_internal_index_func__()
             self.block_shape = self.__get_block_shape__(self.shape)
-            self.pow = int(np.log2(S))
+            self.pow = int(np.log2(self.S))
             self.__set_vals__(picture)
         else:
             self.dim = len(shape)
             self.shape = shape
+            self.__set_S__(S)
             self.__set_internal_index_func__()
             self.block_shape = self.__get_block_shape__(self.shape)
-            self.pow = int(np.log2(S))
+            self.pow = int(np.log2(self.S))
             self.data = np.zeros(np.prod(shape))
+
+    def __set_S__(self, S):
+        """
+        Sets the value of the S-variable, making sure it is not higher than
+        the of a single dimension
+        """
+        self.S = self.shape[0] if self.shape[0] in [2, 4] else S
 
     def __get_block_shape__(self, shape):
         """
