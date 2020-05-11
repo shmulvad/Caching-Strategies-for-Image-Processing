@@ -173,6 +173,7 @@ class MortonOrder(CachingDataStructure):
     def fill(self, fill_val, dtype=None):
         """Fills the entire internal representation with a given value"""
         self.data = np.full_like(self.data, fill_val, dtype=dtype)
+        return self
 
     def to_numpy(self):
         """Transform the data representation to a Numoy array"""
