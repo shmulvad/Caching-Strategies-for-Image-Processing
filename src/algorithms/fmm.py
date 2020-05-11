@@ -29,7 +29,6 @@ class Neighbor(object):
         return self.min_val < other.min_val
 
 
-
 ###########################
 #            2D           #
 ###########################
@@ -125,11 +124,9 @@ def fmm_2d(speed_func_arr, start_point, end_point=None):
     return times
 
 
-
 ###########################
 #            3D           #
 ###########################
-
 def safe_get_times_3d(times, i, j, k):
     """
     Returns the saved time value in 3D array if is a valid index,
@@ -153,7 +150,7 @@ def calc_time_3d(speed_func_arr, times, i, j, k):
     n = 3.0
 
     if not math.isinf(u_sum):
-        reciproc_speed_func_elm_2 = reciproc_speed_func_elm*reciproc_speed_func_elm
+        reciproc_speed_func_elm_2 = reciproc_speed_func_elm * reciproc_speed_func_elm
         discriminant = u_sum*u_sum - n * (u_i*u_i + u_j*u_j + u_k*u_k - reciproc_speed_func_elm_2)
         if discriminant > 0.0:
             return (u_sum + np.sqrt(discriminant)) / n
@@ -224,11 +221,9 @@ def fmm_3d(speed_func_arr, start_point, end_point=None):
     return times
 
 
-
 ###########################
 #     General case        #
 ###########################
-
 def get_direct_neighbour_coords_general(key):
     """
     Gets the direct neighbors given a coordinate key. I.e. if key = (3,3,3),
