@@ -30,10 +30,10 @@ class MortonOrder(CachingDataStructure):
         Sets the correct parting and compact functions to use based on the
         dimension of picture/shape
         """
-        assert self.dim >= 2 and self.dim <= 4, "Only supports 2-, 3- and 4D pictures"
-        func_idx = self.dim - 2
-        self.part_func = [self.part1by1, self.part1by2, self.part1by3][func_idx]
-        self.compact_func = [self.compact1by1, self.compact1by2, self.compact1by3][func_idx]
+        assert self.dim >= 1 and self.dim <= 4, "Only supports 1-, 2-, 3- and 4D pictures"
+        func_idx = self.dim - 1
+        self.part_func = [self.part1by0, self.part1by1, self.part1by2, self.part1by3][func_idx]
+        self.compact_func = [self.compact1by0, self.compact1by1, self.compact1by2, self.compact1by3][func_idx]
 
     def __set_vals__(self, picture):
         """Sets the internal data object to values of image."""
@@ -118,6 +118,10 @@ class MortonOrder(CachingDataStructure):
         x = (x ^ (x << 1)) & 0x55555555  # x = -f-e -d-c -b-a -9-8 -7-6 -5-4 -3-2 -1-0
         return x
 
+    def part1by0(self, x):
+        """Inserts zero 0 bit after each of the 16 low bits of x. Useful for 1D"""
+        return x
+
     def morton_encode(self, key: tuple):
         """
         Given a key of type (x, y, z, etc.) (equal to dimension of encoding)
@@ -161,6 +165,10 @@ class MortonOrder(CachingDataStructure):
         x = (x | (x >> 2)) & 0x0f0f0f0f  # x = ---- fedc ---- ba98 ---- 7654 ---- 3210
         x = (x | (x >> 4)) & 0x00ff00ff  # x = ---- ---- fedc ba98 ---- ---- 7654 3210
         x = (x | (x >> 8)) & 0x0000ffff  # x = ---- ---- ---- ---- fedc ba98 7654 3210
+        return x
+
+    def compact1by0(self, x):
+        """Returns the input itself. Useful for 1D"""
         return x
 
     def morton_decode(self, code):
