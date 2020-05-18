@@ -54,8 +54,8 @@ def calc_time_2d(speed_func_arr, times, i, j):
     reciproc_speed_func_elm_2 = reciproc_speed_func_elm * reciproc_speed_func_elm
 
     return 0.5 * (u_sum + np.sqrt(u_sum*u_sum - 2.0 * (u_i * u_i + u_j * u_j - reciproc_speed_func_elm_2))) \
-           if diff <= reciproc_speed_func_elm \
-           else reciproc_speed_func_elm + min(u_i, u_j)
+        if diff <= reciproc_speed_func_elm \
+        else reciproc_speed_func_elm + min(u_i, u_j)
 
 
 def get_neighbors_2d(status, i, j):

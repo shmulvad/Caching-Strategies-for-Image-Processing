@@ -36,7 +36,7 @@ GENERATE_NEW_RESULTS = False
 
 ## Testing correctness
 
-To test that the algorithms and data structures work as intended, a number of correctness tests have been defined in the `src/correctness-tests/`-folder. To run these, navigate to the test folder and run `$ pytest`.
+To test that the algorithms and data structures work as intended, a number of correctness tests have been defined in the `src/tests/`-folder. Run `$ pytest` to execute these.
 
 
 ## Credits
