@@ -35,7 +35,7 @@ class TestFastFourierTransform(object):
     def test_bit_rev_copy(self):
         arr = [0, 1, 2, 3, 4, 5, 6, 7]
         expected = np.array([0, 4, 2, 6, 1, 5, 3, 7])
-        res = bit_rev_copy(RowMajorArray(arr))
+        res = bit_rev_copy(RowMajorArray(arr), 0)
         np.testing.assert_almost_equal(expected, res.to_numpy())
 
     def test_1d(self):
