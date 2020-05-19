@@ -1,4 +1,9 @@
-def should_erode_pixel(picture, kernel, kernel_dim, pad, x, y):
+from data_structures.caching_data_stucture import CachingDataStructure
+import numpy as np
+
+
+def should_erode_pixel(picture: CachingDataStructure, kernel: np.ndarray,
+                       kernel_dim: int, pad: int, x: int, y: int) -> bool:
     for i in range(kernel_dim):
         for j in range(kernel_dim):
             for h in range(kernel_dim):
@@ -7,16 +12,21 @@ def should_erode_pixel(picture, kernel, kernel_dim, pad, x, y):
     return True
 
 
-def should_erode_voxel(picture, kernel, kernel_dim, pad, x, y, z):
+def should_erode_voxel(picture: CachingDataStructure, kernel: np.ndarray,
+                       kernel_dim: int, pad: int, x: int, y: int, z: int) \
+                       -> bool:
     for i in range(kernel_dim):
         for j in range(kernel_dim):
             for h in range(kernel_dim):
-                if kernel[i, j, h] > picture[x + i - pad, y + j - pad, z + h - pad]:
+                if kernel[i, j, h] > picture[x + i - pad,
+                                             y + j - pad,
+                                             z + h - pad]:
                     return False
     return True
 
 
-def erosion_2d(picture, kernel):
+def erosion_2d(picture: CachingDataStructure,
+               kernel: np.ndarray) -> CachingDataStructure:
     assert picture.dim == 2
     ret_data = picture.empty_of_same_shape()
     kernel_dim = kernel.shape[0]
@@ -24,12 +34,14 @@ def erosion_2d(picture, kernel):
     for (x, y) in picture.iter_keys():
         if not picture.valid_index(x, y, pad=pad):
             continue
-        should_erode = should_erode_pixel(picture, kernel, kernel_dim, pad, x, y)
+        should_erode = should_erode_pixel(picture, kernel,
+                                          kernel_dim, pad, x, y)
         ret_data[x, y] = 0 if should_erode else 1
     return ret_data
 
 
-def erosion_3d(picture, kernel):
+def erosion_3d(picture: CachingDataStructure,
+               kernel: np.ndarray) -> CachingDataStructure:
     assert picture.dim == 3
     ret_data = picture.empty_of_same_shape()
     kernel_dim = kernel.shape[0]
@@ -37,6 +49,7 @@ def erosion_3d(picture, kernel):
     for (x, y, z) in picture.iter_keys():
         if not picture.valid_index(x, y, z, pad=pad):
             continue
-        should_erode = should_erode_voxel(picture, kernel, kernel_dim, pad, x, y, z)
-        ret_data[x,y,z] = 0 if should_erode else 1
+        should_erode = should_erode_voxel(picture, kernel,
+                                          kernel_dim, pad, x, y, z)
+        ret_data[x, y, z] = 0 if should_erode else 1
     return ret_data

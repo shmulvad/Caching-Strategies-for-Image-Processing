@@ -1,4 +1,11 @@
-def matmul(A, B, C, A_left_top, B_left_top, C_left_top, n):
+from data_structures.caching_data_stucture import CachingDataStructure
+
+
+def matmul(A: CachingDataStructure,
+           B: CachingDataStructure,
+           C: CachingDataStructure,
+           A_left_top: tuple, B_left_top: tuple, C_left_top: tuple,
+           n: int) -> None:
     """
     Does standard 3-nested for-loop matrix multiplication at a particular
     location in array. Returns nothing, but submatrix C is modified when
@@ -15,7 +22,7 @@ def matmul(A, B, C, A_left_top, B_left_top, C_left_top, n):
                                             B[b_top + k, b_left + j]
 
 
-def left_top_submatrices(left_top_tuple, n_half):
+def left_top_submatrices(left_top_tuple: tuple, n_half: int) -> tuple:
     """
     Calculates the coordinates of the top left corner of the four submatrices
     and returns these as four tuples of two coordinates
@@ -28,7 +35,11 @@ def left_top_submatrices(left_top_tuple, n_half):
     return (M00, M01, M10, M11)
 
 
-def mm_recursive(A, B, C, A_left_top, B_left_top, C_left_top, n, r):
+def mm_recursive(A: CachingDataStructure,
+                 B: CachingDataStructure,
+                 C: CachingDataStructure,
+                 A_left_top: tuple, B_left_top: tuple, C_left_top: tuple,
+                 n: int, r: int) -> None:
     """
     Recursively does matrix multiplication in the different blocks until
     recursion depth r is reached.
@@ -36,7 +47,7 @@ def mm_recursive(A, B, C, A_left_top, B_left_top, C_left_top, n, r):
     if r <= 0 or n <= 2:  # Standard matrix multiplication
         matmul(A, B, C, A_left_top, B_left_top, C_left_top, n)
     else:
-        n_half = int(n / 2)
+        n_half = n // 2
         A00, A01, A10, A11 = left_top_submatrices(A_left_top, n_half)
         B00, B01, B10, B11 = left_top_submatrices(B_left_top, n_half)
         C00, C01, C10, C11 = left_top_submatrices(C_left_top, n_half)
@@ -52,14 +63,17 @@ def mm_recursive(A, B, C, A_left_top, B_left_top, C_left_top, n, r):
         mm_recursive(A, B, C, A11, B11, C11, n_half, r1)
 
 
-def matmul_rec(A, B, r):
+def matmul_rec(A: CachingDataStructure, B: CachingDataStructure,
+               r: int) -> CachingDataStructure:
     """
-    Entry point for calling the recursive matrix multiplication to some recursion
-    depth r. A and B should both be n x n matrices where n = 2^t and implement
-    empty_of_same_shape(). Returns the result of the matrix multiplication
+    Entry point for calling the recursive matrix multiplication to some
+    recursion depth r. A and B should both be n x n CachingDataStructure
+    where n = 2^t. Returns the result of the matrix multiplication
     """
-    assert A.dim == 2 and B.dim == 2, f"Arrays should be 2D but got dimensions {A.dim} and {B.dim}"
-    assert A.shape == B.shape, f"Arrays should be same shape but got {A.shape} and {B.shape}"
+    assert A.dim == 2 and B.dim == 2, \
+        f"Arrays should be 2D but got dimensions {A.dim} and {B.dim}"
+    assert A.shape == B.shape, \
+        f"Arrays should be same shape but got {A.shape} and {B.shape}"
     C = B.empty_of_same_shape()
     n = B.shape[0]
     mm_recursive(A, B, C, (0, 0), (0, 0), (0, 0), n, r)

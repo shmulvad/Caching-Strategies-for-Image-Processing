@@ -1,4 +1,10 @@
-def convolve_pixel(picture, kernel, kernel_dim, pad, x, y, cval):
+from data_structures.caching_data_stucture import CachingDataStructure
+import numpy as np
+
+
+def convolve_pixel(picture: CachingDataStructure, kernel: np.ndarray,
+                   kernel_dim: int, pad: int,
+                   x: int, y: int, cval: float) -> CachingDataStructure:
     """Performs spatial convolution at a single pixel in a 2D image"""
     pixel = 0.0
     for i in range(kernel_dim):
@@ -11,7 +17,9 @@ def convolve_pixel(picture, kernel, kernel_dim, pad, x, y, cval):
     return pixel
 
 
-def convolve_voxel(picture, kernel, kernel_dim, pad, x, y, z, cval):
+def convolve_voxel(picture: CachingDataStructure, kernel: np.ndarray,
+                   kernel_dim: int, pad: int,
+                   x: int, y: int, z: int, cval: float) -> float:
     """Performs spatial convolution at a single voxel in a 3D image"""
     voxel = 0.0
     for i in range(kernel_dim):
@@ -25,7 +33,8 @@ def convolve_voxel(picture, kernel, kernel_dim, pad, x, y, z, cval):
     return voxel
 
 
-def convolution_2d(picture, kernel, cval=0.0):
+def convolution_2d(picture: CachingDataStructure, kernel: np.ndarray,
+                   cval: float = 0.0) -> CachingDataStructure:
     """Performs convolution for a 2D image. Pads borders with cval"""
     assert picture.dim == 2
     ret_data = picture.empty_of_same_shape()
@@ -37,7 +46,8 @@ def convolution_2d(picture, kernel, cval=0.0):
     return ret_data
 
 
-def convolution_3d(picture, kernel, cval=0.0):
+def convolution_3d(picture: CachingDataStructure, kernel: np.ndarray,
+                   cval: float = 0.0) -> CachingDataStructure:
     """Performs convolution for a 3D image. Pads borders with cval"""
     assert picture.dim == 3
     ret_data = picture.empty_of_same_shape()
@@ -49,7 +59,8 @@ def convolution_3d(picture, kernel, cval=0.0):
     return ret_data
 
 
-def convolution(picture, kernel, cval=0.0):
+def convolution(picture: CachingDataStructure, kernel: np.ndarray,
+                cval: float = 0.0) -> CachingDataStructure:
     """Performs convolution for a 2D or 3D image. Pads borders with cval"""
     assert picture.dim in [2, 3], \
         f"Convolution for pictures of dim {picture.dim} not implemented"

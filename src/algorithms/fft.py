@@ -1,8 +1,11 @@
 import numpy as np
 from itertools import product
+from typing import Any
+
+from data_structures.caching_data_stucture import CachingDataStructure
 
 
-def tuple_gen(new_val, ori_tuple, axis):
+def tuple_gen(new_val: Any, ori_tuple: tuple, axis: int) -> tuple:
     """
     Returns a tuple similar to ori_tuple but with new_val at a specifix axis
     """
@@ -11,7 +14,7 @@ def tuple_gen(new_val, ori_tuple, axis):
     return tuple(lst)
 
 
-def rev_bit_str(n, bitlen):
+def rev_bit_str(n: int, bitlen: int) -> int:
     """
     Reverses the bitstring of length bitlen of a number n and returns the
     bitreverses integer. I.e. rev_bits(3, 4) => "0011" => "1100" => 12
@@ -22,7 +25,8 @@ def rev_bit_str(n, bitlen):
                 for idx, bit in enumerate(bits)])
 
 
-def bit_rev_inplace(arr, axis=0):
+def bit_rev_inplace(arr: CachingDataStructure, axis: int) \
+                    -> CachingDataStructure:
     """
     Swaps the values along a given axis according to the reversed bit value
     of that index
@@ -38,13 +42,14 @@ def bit_rev_inplace(arr, axis=0):
     return arr
 
 
-def iter_fft_1d(output, N, idxs, axis):
+def iter_fft_1d(output: CachingDataStructure, N: int, idxs: tuple, axis: int) \
+                -> None:
     """
     Performs the FFT on an n-Dimensional CachingDataStructure along a specific
     1-dimensional axis. output should be the bit-reversed signal array and
     idxs is a tuple of indices that should be held constant except for the one
     at axis. Doesn't return anything but output along the given axis has now
-    undergone FFT
+    undergone FFT. Assumes the output-array has already been bit-reversed.
     """
     for s in range(1, int(np.log2(N)) + 1):
         m = 2**s
@@ -59,27 +64,26 @@ def iter_fft_1d(output, N, idxs, axis):
                 u = output[key2]
                 output[key2] = u + t
                 output[key1] = u - t
-                w = w * w_m
+                w *= w_m
 
 
-def fftn(signal):
+def fftn(signal: CachingDataStructure) -> CachingDataStructure:
     """
     Performs FFT on an n-dimensional input signal. The input should be a
     perfect square/cube/etc. and have a side length in each dimension of 2**i
-    where i is some integer. It is done inplace so original sginal array is
-    destroyed.
+    where i is some integer. It is done inplace so original array is
+    modified.
     """
     N, dim = signal.shape[0], signal.dim
     for axis in range(dim - 1, -1, -1):  # i.e. [2, 1, 0] for dim = 3
         bit_rev_inplace(signal, axis=axis)
-        iter_ranges = tuple([range(0, 1) if axis == i else range(N)
-                             for i in range(dim)])
+        iter_ranges = ([None] if axis == i else range(N) for i in range(dim))
         for idxs in product(*iter_ranges):
             iter_fft_1d(signal, N, idxs, axis)
     return signal
 
 
-def bit_rev_copy(arr, axis=0):
+def bit_rev_copy(arr: CachingDataStructure, axis: int) -> CachingDataStructure:
     """
     Copies an CachingDataStructure, but swaps the values along a given axis
     according to the reversed bit value of that index
@@ -93,7 +97,7 @@ def bit_rev_copy(arr, axis=0):
     return rev_arr
 
 
-def fftn_copy_arr(signal):
+def fftn_copy_arr(signal: CachingDataStructure) -> CachingDataStructure:
     """
     Performs FFT on an n-dimensional input signal. The input should be a
     perfect square/cube/etc. and have a side length in each dimension of 2**i
@@ -104,8 +108,7 @@ def fftn_copy_arr(signal):
     prev = signal
     for axis in range(dim - 1, -1, -1):  # i.e. [2, 1, 0] for dim = 3
         rev_signal = bit_rev_copy(prev, axis=axis)
-        iter_ranges = tuple([range(0, 1) if axis == i else range(N)
-                             for i in range(dim)])
+        iter_ranges = ([None] if axis == i else range(N) for i in range(dim))
         for idxs in product(*iter_ranges):
             iter_fft_1d(rev_signal, N, idxs, axis)
         prev = rev_signal
