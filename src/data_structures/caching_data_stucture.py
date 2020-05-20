@@ -1,15 +1,18 @@
 from abc import ABC, abstractmethod
-import numpy as np
 from typing import Any, Generator
+from itertools import product
+from math import log2
+import numpy as np
 
 
 class CachingDataStructure(ABC):
     shape: tuple
     dim: int
     offset: int
-    name: str
+    print_name: str
+    type_name: str
+    data: np.ndarray = None
     cache = None
-    data = None
 
     def __init__(self):
         """
@@ -41,14 +44,36 @@ class CachingDataStructure(ABC):
             self.cache.load(8*(idx + self.offset), length=8)
         return self.data.__getitem__(idx)
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         """
         Returns the Numpy representation of the data after it has been
         reshaped to orignal dimensions
         """
-        padding = " " * (len(self.name) - len("array"))
-        return self.to_numpy().__repr__().replace("array", self.name).\
+        return self.to_numpy().__str__()
+
+    def __repr__(self) -> str:
+        """
+        Returns the Numpy representation of the data after it has been
+        reshaped to orignal dimensions with the CachingDataStructure's name
+        """
+        padding = " " * (len(self.print_name) - len("array"))
+        return self.to_numpy().__repr__().replace("array", self.print_name).\
             replace("\n ", f"\n {padding}")
+
+    def __set_shape__(self, shape: tuple) -> None:
+        """
+        Sets the shape of the CachingDataStructure, alerting user if a
+        dimension or side length is off
+        """
+        assert not len(shape) == 0, "You can't give a zero-length shape"
+        N = shape[0]
+        assert all(n == N for n in shape), \
+            f"{self.type_name} should be perfect square/cube/etc. " + \
+            f"but got the shape {shape}"
+        assert log2(N).is_integer(), \
+            f"{self.type_name}'s side length should be a power of 2 " + \
+            f"but got {N}"
+        self.shape = shape
 
     def fill(self, fill_val: Any, dtype=None) -> 'CachingDataStructure':
         """Fills the entire internal representation with a given value"""
@@ -57,12 +82,21 @@ class CachingDataStructure(ABC):
 
     def valid_index(self, *args: int, pad: int = 0) -> bool:
         """
-        Returns true the index specified is valid in this data structure and
+        Returns true if the index specified is valid in this data structure and
         within optional padding value
         """
         return len(args) == self.dim and \
             all([args[i] >= pad and args[i] < self.shape[i] - pad
                  for i in range(self.dim)])
+
+    def to_numpy(self) -> np.ndarray:
+        """Transform the data CachingDataStructure to a Numpy array"""
+        ret_data = np.zeros(self.shape, dtype=self.data.dtype)
+        shape_ranges = (range(N) for N in self.shape)
+        for key in product(*shape_ranges):
+            idx = self.internal_index(*key)
+            ret_data[key] = self.data[idx]
+        return ret_data
 
     def get_next_offset(self) -> int:
         """
@@ -93,9 +127,4 @@ class CachingDataStructure(ABC):
         Returns a generator that yields tuples of the keys in
         internal linear layout (optimal spatial locality)
         """
-        pass
-
-    @abstractmethod
-    def to_numpy(self) -> np.ndarray:
-        """Transform the CachingDataStructure to a Numpy array"""
         pass

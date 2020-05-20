@@ -8,7 +8,8 @@ from data_structures.caching_data_stucture import CachingDataStructure
 # A decorator for the NdArray that implements ICachingDataStructure to allow it
 # to be used in the same functions
 class RowMajorArray(CachingDataStructure):
-    name = "rm_arr"
+    print_name = "rm_arr"
+    type_name = "RowMajorArray"
 
     def __init__(self, picture=None, shape=None, cache=None, offset=0):
         assert not (picture is None and shape is None), \
@@ -20,12 +21,12 @@ class RowMajorArray(CachingDataStructure):
         if picture is not None:
             picture = np.array(picture)
             self.dim = len(picture.shape)
-            self.shape = picture.shape
+            self.__set_shape__(picture.shape)
             self.__set_internal_index_func__()
             self.__set_vals__(picture)
         else:
             self.dim = len(shape)
-            self.shape = shape
+            self.__set_shape__(shape)
             self.__set_internal_index_func__()
             self.data = np.zeros(np.prod(self.shape))
 
@@ -97,7 +98,3 @@ class RowMajorArray(CachingDataStructure):
         # x * self.shape[1] * self.shape[2] + y * self.shape[2] + z
         return sum(args[i] * int(np.prod(self.shape[i+1:]))
                    for i in range(self.dim))
-
-    def to_numpy(self) -> np.ndarray:
-        """Transform the data representation to a Numoy array"""
-        return self.data.reshape(self.shape)

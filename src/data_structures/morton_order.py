@@ -7,7 +7,8 @@ from data_structures.caching_data_stucture import CachingDataStructure
 
 # Morton order as a caching data structure
 class MortonOrder(CachingDataStructure):
-    name = "Morton"
+    print_name = "Morton"
+    type_name = "MortonOrder"
 
     def __init__(self, picture=None, shape=None, cache=None, offset=0):
         assert not (picture is None and shape is None), \
@@ -19,12 +20,12 @@ class MortonOrder(CachingDataStructure):
         if picture is not None:
             picture = np.array(picture)
             self.dim = len(picture.shape)
-            self.shape = picture.shape
+            self.__set_shape__(picture.shape)
             self.__set_part_compact_func__()
             self.__set_vals__(picture)
         else:
             self.dim = len(shape)
-            self.shape = shape
+            self.__set_shape__(shape)
             self.__set_part_compact_func__()
             self.data = np.zeros(np.prod(shape))
 
@@ -155,12 +156,3 @@ class MortonOrder(CachingDataStructure):
         a 3D image or (2, 1, 3, 3) for 4D etc.
         """
         return tuple([self.compact_func(code >> i) for i in range(self.dim)])
-
-    def to_numpy(self) -> np.ndarray:
-        """Transform the data representation to a Numpy array"""
-        ret_data = np.zeros(self.shape, dtype=self.data.dtype)
-        shape_ranges = (range(N) for N in self.shape)
-        for key in product(*shape_ranges):
-            idx = self.morton_encode(key)
-            ret_data[key] = self.data[idx]
-        return ret_data
