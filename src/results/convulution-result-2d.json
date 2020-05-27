@@ -982,5 +982,333 @@
                 "MISS_byte": 0
             }
         ]
+    },
+    "1024": {
+        "morton": [
+            {
+                "name": "L1",
+                "LOAD_count": 9555972,
+                "LOAD_byte": 83787808,
+                "STORE_count": 1048576,
+                "STORE_byte": 8388608,
+                "HIT_count": 9268028,
+                "HIT_byte": 74144224,
+                "MISS_count": 287944,
+                "MISS_byte": 9643584,
+                "EVICT_count": 131072,
+                "EVICT_byte": 8388608
+            },
+            {
+                "name": "L2",
+                "LOAD_count": 287944,
+                "LOAD_byte": 18428416,
+                "STORE_count": 131072,
+                "STORE_byte": 8388608,
+                "HIT_count": 18864,
+                "HIT_byte": 1207296,
+                "MISS_count": 269080,
+                "MISS_byte": 17221120,
+                "EVICT_count": 131072,
+                "EVICT_byte": 8388608
+            },
+            {
+                "name": "L3",
+                "LOAD_count": 269080,
+                "LOAD_byte": 17221120,
+                "STORE_count": 131072,
+                "STORE_byte": 8388608,
+                "HIT_count": 269080,
+                "HIT_byte": 17221120,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 131072,
+                "EVICT_byte": 8388608
+            },
+            {
+                "name": "MEM",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "STORE_count": 131072,
+                "STORE_byte": 8388608,
+                "EVICT_count": 0,
+                "EVICT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0
+            }
+        ],
+        "row_arr": [
+            {
+                "name": "L1",
+                "LOAD_count": 9555972,
+                "LOAD_byte": 83787808,
+                "STORE_count": 1048576,
+                "STORE_byte": 8388608,
+                "HIT_count": 9293828,
+                "HIT_byte": 74350624,
+                "MISS_count": 262144,
+                "MISS_byte": 9437184,
+                "EVICT_count": 131072,
+                "EVICT_byte": 8388608
+            },
+            {
+                "name": "L2",
+                "LOAD_count": 262144,
+                "LOAD_byte": 16777216,
+                "STORE_count": 131072,
+                "STORE_byte": 8388608,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "MISS_count": 262144,
+                "MISS_byte": 16777216,
+                "EVICT_count": 131072,
+                "EVICT_byte": 8388608
+            },
+            {
+                "name": "L3",
+                "LOAD_count": 262144,
+                "LOAD_byte": 16777216,
+                "STORE_count": 131072,
+                "STORE_byte": 8388608,
+                "HIT_count": 262144,
+                "HIT_byte": 16777216,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 131072,
+                "EVICT_byte": 8388608
+            },
+            {
+                "name": "MEM",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "STORE_count": 131072,
+                "STORE_byte": 8388608,
+                "EVICT_count": 0,
+                "EVICT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0
+            }
+        ],
+        "block_arr": [
+            {
+                "name": "L1",
+                "LOAD_count": 9555972,
+                "LOAD_byte": 83787808,
+                "STORE_count": 1048576,
+                "STORE_byte": 8388608,
+                "HIT_count": 9261316,
+                "HIT_byte": 74090528,
+                "MISS_count": 294656,
+                "MISS_byte": 9697280,
+                "EVICT_count": 131072,
+                "EVICT_byte": 8388608
+            },
+            {
+                "name": "L2",
+                "LOAD_count": 294656,
+                "LOAD_byte": 18857984,
+                "STORE_count": 131072,
+                "STORE_byte": 8388608,
+                "HIT_count": 32512,
+                "HIT_byte": 2080768,
+                "MISS_count": 262144,
+                "MISS_byte": 16777216,
+                "EVICT_count": 131072,
+                "EVICT_byte": 8388608
+            },
+            {
+                "name": "L3",
+                "LOAD_count": 262144,
+                "LOAD_byte": 16777216,
+                "STORE_count": 131072,
+                "STORE_byte": 8388608,
+                "HIT_count": 262144,
+                "HIT_byte": 16777216,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 131072,
+                "EVICT_byte": 8388608
+            },
+            {
+                "name": "MEM",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "STORE_count": 131072,
+                "STORE_byte": 8388608,
+                "EVICT_count": 0,
+                "EVICT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0
+            }
+        ]
+    },
+    "2048": {
+        "morton": [
+            {
+                "name": "L1",
+                "LOAD_count": 38248452,
+                "LOAD_byte": 335347744,
+                "STORE_count": 4194304,
+                "STORE_byte": 33554432,
+                "HIT_count": 37092988,
+                "HIT_byte": 296743904,
+                "MISS_count": 1155464,
+                "MISS_byte": 38603840,
+                "EVICT_count": 524288,
+                "EVICT_byte": 33554432
+            },
+            {
+                "name": "L2",
+                "LOAD_count": 1155464,
+                "LOAD_byte": 73949696,
+                "STORE_count": 524288,
+                "STORE_byte": 33554432,
+                "HIT_count": 75872,
+                "HIT_byte": 4855808,
+                "MISS_count": 1079592,
+                "MISS_byte": 69093888,
+                "EVICT_count": 524288,
+                "EVICT_byte": 33554432
+            },
+            {
+                "name": "L3",
+                "LOAD_count": 1079592,
+                "LOAD_byte": 69093888,
+                "STORE_count": 524288,
+                "STORE_byte": 33554432,
+                "HIT_count": 30000,
+                "HIT_byte": 1920000,
+                "MISS_count": 1049592,
+                "MISS_byte": 67173888,
+                "EVICT_count": 524288,
+                "EVICT_byte": 33554432
+            },
+            {
+                "name": "MEM",
+                "LOAD_count": 1049592,
+                "LOAD_byte": 67173888,
+                "HIT_count": 1049592,
+                "HIT_byte": 67173888,
+                "STORE_count": 524288,
+                "STORE_byte": 33554432,
+                "EVICT_count": 0,
+                "EVICT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0
+            }
+        ],
+        "row_arr": [
+            {
+                "name": "L1",
+                "LOAD_count": 38248452,
+                "LOAD_byte": 335347744,
+                "STORE_count": 4194304,
+                "STORE_byte": 33554432,
+                "HIT_count": 36151812,
+                "HIT_byte": 289214496,
+                "MISS_count": 2096640,
+                "MISS_byte": 46133248,
+                "EVICT_count": 524288,
+                "EVICT_byte": 33554432
+            },
+            {
+                "name": "L2",
+                "LOAD_count": 2096640,
+                "LOAD_byte": 134184960,
+                "STORE_count": 524288,
+                "STORE_byte": 33554432,
+                "HIT_count": 1048064,
+                "HIT_byte": 67076096,
+                "MISS_count": 1048576,
+                "MISS_byte": 67108864,
+                "EVICT_count": 524288,
+                "EVICT_byte": 33554432
+            },
+            {
+                "name": "L3",
+                "LOAD_count": 1048576,
+                "LOAD_byte": 67108864,
+                "STORE_count": 524288,
+                "STORE_byte": 33554432,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "MISS_count": 1048576,
+                "MISS_byte": 67108864,
+                "EVICT_count": 524288,
+                "EVICT_byte": 33554432
+            },
+            {
+                "name": "MEM",
+                "LOAD_count": 1048576,
+                "LOAD_byte": 67108864,
+                "HIT_count": 1048576,
+                "HIT_byte": 67108864,
+                "STORE_count": 524288,
+                "STORE_byte": 33554432,
+                "EVICT_count": 0,
+                "EVICT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0
+            }
+        ],
+        "block_arr": [
+            {
+                "name": "L1",
+                "LOAD_count": 38248452,
+                "LOAD_byte": 335347744,
+                "STORE_count": 4194304,
+                "STORE_byte": 33554432,
+                "HIT_count": 37069316,
+                "HIT_byte": 296554528,
+                "MISS_count": 1179136,
+                "MISS_byte": 38793216,
+                "EVICT_count": 524288,
+                "EVICT_byte": 33554432
+            },
+            {
+                "name": "L2",
+                "LOAD_count": 1179136,
+                "LOAD_byte": 75464704,
+                "STORE_count": 524288,
+                "STORE_byte": 33554432,
+                "HIT_count": 128,
+                "HIT_byte": 8192,
+                "MISS_count": 1179008,
+                "MISS_byte": 75456512,
+                "EVICT_count": 524288,
+                "EVICT_byte": 33554432
+            },
+            {
+                "name": "L3",
+                "LOAD_count": 1179008,
+                "LOAD_byte": 75456512,
+                "STORE_count": 524288,
+                "STORE_byte": 33554432,
+                "HIT_count": 130432,
+                "HIT_byte": 8347648,
+                "MISS_count": 1048576,
+                "MISS_byte": 67108864,
+                "EVICT_count": 524288,
+                "EVICT_byte": 33554432
+            },
+            {
+                "name": "MEM",
+                "LOAD_count": 1048576,
+                "LOAD_byte": 67108864,
+                "HIT_count": 1048576,
+                "HIT_byte": 67108864,
+                "STORE_count": 524288,
+                "STORE_byte": 33554432,
+                "EVICT_count": 0,
+                "EVICT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0
+            }
+        ]
     }
 }

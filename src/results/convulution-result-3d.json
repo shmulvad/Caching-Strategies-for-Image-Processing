@@ -1,4 +1,168 @@
 {
+    "8": {
+        "morton": [
+            {
+                "name": "L1",
+                "LOAD_count": 10648,
+                "LOAD_byte": 85184,
+                "STORE_count": 512,
+                "STORE_byte": 4096,
+                "HIT_count": 10648,
+                "HIT_byte": 85184,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 64,
+                "EVICT_byte": 4096
+            },
+            {
+                "name": "L2",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "STORE_count": 64,
+                "STORE_byte": 4096,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 64,
+                "EVICT_byte": 4096
+            },
+            {
+                "name": "L3",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "STORE_count": 64,
+                "STORE_byte": 4096,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 64,
+                "EVICT_byte": 4096
+            },
+            {
+                "name": "MEM",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "STORE_count": 64,
+                "STORE_byte": 4096,
+                "EVICT_count": 0,
+                "EVICT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0
+            }
+        ],
+        "row_arr": [
+            {
+                "name": "L1",
+                "LOAD_count": 10648,
+                "LOAD_byte": 85184,
+                "STORE_count": 512,
+                "STORE_byte": 4096,
+                "HIT_count": 10648,
+                "HIT_byte": 85184,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 64,
+                "EVICT_byte": 4096
+            },
+            {
+                "name": "L2",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "STORE_count": 64,
+                "STORE_byte": 4096,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 64,
+                "EVICT_byte": 4096
+            },
+            {
+                "name": "L3",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "STORE_count": 64,
+                "STORE_byte": 4096,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 64,
+                "EVICT_byte": 4096
+            },
+            {
+                "name": "MEM",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "STORE_count": 64,
+                "STORE_byte": 4096,
+                "EVICT_count": 0,
+                "EVICT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0
+            }
+        ],
+        "block_arr": [
+            {
+                "name": "L1",
+                "LOAD_count": 10648,
+                "LOAD_byte": 85184,
+                "STORE_count": 512,
+                "STORE_byte": 4096,
+                "HIT_count": 10648,
+                "HIT_byte": 85184,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 64,
+                "EVICT_byte": 4096
+            },
+            {
+                "name": "L2",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "STORE_count": 64,
+                "STORE_byte": 4096,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 64,
+                "EVICT_byte": 4096
+            },
+            {
+                "name": "L3",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "STORE_count": 64,
+                "STORE_byte": 4096,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0,
+                "EVICT_count": 64,
+                "EVICT_byte": 4096
+            },
+            {
+                "name": "MEM",
+                "LOAD_count": 0,
+                "LOAD_byte": 0,
+                "HIT_count": 0,
+                "HIT_byte": 0,
+                "STORE_count": 64,
+                "STORE_byte": 4096,
+                "EVICT_count": 0,
+                "EVICT_byte": 0,
+                "MISS_count": 0,
+                "MISS_byte": 0
+            }
+        ]
+    },
     "16": {
         "morton": [
             {
