@@ -2,12 +2,13 @@ import numpy as np
 from itertools import product
 from typing import Generator
 
+from helper_funcs import BLOCK_ARR
 from data_structures.caching_data_stucture import CachingDataStructure
 
 
 # A BlockArray to be used as a caching data structure
 class BlockArray(CachingDataStructure):
-    print_name = "Block"
+    print_name = BLOCK_ARR
     type_name = "BlockArray"
 
     def __init__(self, picture=None, shape=None, K=8, cache=None, offset=0):

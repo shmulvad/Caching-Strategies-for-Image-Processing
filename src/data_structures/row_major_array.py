@@ -2,13 +2,14 @@ import numpy as np
 from itertools import product
 from typing import Generator
 
+from helper_funcs import ROW_ARR
 from data_structures.caching_data_stucture import CachingDataStructure
 
 
 # A decorator for the NdArray that implements ICachingDataStructure to allow it
 # to be used in the same functions
 class RowMajorArray(CachingDataStructure):
-    print_name = "rm_arr"
+    print_name = ROW_ARR
     type_name = "RowMajorArray"
 
     def __init__(self, picture=None, shape=None, cache=None, offset=0):

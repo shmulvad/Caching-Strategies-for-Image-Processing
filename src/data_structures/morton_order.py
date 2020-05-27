@@ -2,15 +2,17 @@ import numpy as np
 from itertools import product
 from typing import Generator
 
+from helper_funcs import MORTON
 from data_structures.caching_data_stucture import CachingDataStructure
 
 
 # Morton order as a caching data structure
 class MortonOrder(CachingDataStructure):
-    print_name = "Morton"
+    print_name = MORTON
     type_name = "MortonOrder"
 
-    def __init__(self, picture=None, shape=None, cache=None, offset=0):
+    def __init__(self, picture: np.ndarray = None,
+                 shape: tuple = None, cache=None, offset: int = 0):
         assert not (picture is None and shape is None), \
             "You have to set *either* picture or shape"
         assert not (picture is not None and shape is not None), \
@@ -48,7 +50,7 @@ class MortonOrder(CachingDataStructure):
     def __set_vals__(self, picture) -> None:
         """Sets the internal data object to values of image."""
         data = np.zeros(np.prod(self.shape), dtype=picture.dtype)
-        shape_ranges = (range(val) for val in self.shape)
+        shape_ranges = (range(n) for n in self.shape)
         for key in product(*shape_ranges):
             data[self.morton_encode(key)] = picture[key]
         self.data = data

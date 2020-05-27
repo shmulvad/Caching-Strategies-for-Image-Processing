@@ -68,8 +68,7 @@ class CachingDataStructure(ABC):
         assert not len(shape) == 0, "You can't give a zero-length shape"
         N = shape[0]
         assert all(n == N for n in shape), \
-            f"{self.type_name} should be perfect square/cube/etc. " + \
-            f"but got the shape {shape}"
+            f"{self.type_name} should be a hypercube but got the shape {shape}"
         assert log2(N).is_integer(), \
             f"{self.type_name}'s side length should be a power of 2 " + \
             f"but got {N}"
@@ -90,7 +89,7 @@ class CachingDataStructure(ABC):
                  for i in range(self.dim)])
 
     def to_numpy(self) -> np.ndarray:
-        """Transform the data CachingDataStructure to a Numpy array"""
+        """Transforms the CachingDataStructure to a Numpy array"""
         ret_data = np.zeros(self.shape, dtype=self.data.dtype)
         shape_ranges = (range(N) for N in self.shape)
         for key in product(*shape_ranges):
