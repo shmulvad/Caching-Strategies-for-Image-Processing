@@ -9,7 +9,7 @@ class TestBlockArr(object):
         pass
 
     def test_internal_index_correct_2d(self):
-        block_arr = BlockArray(shape=(8, 8), S=2)
+        block_arr = BlockArray(shape=(8, 8), K=2)
         assert block_arr.internal_index(0, 0) == 0
         assert block_arr.internal_index(0, 1) == 1
         assert block_arr.internal_index(1, 1) == 3
