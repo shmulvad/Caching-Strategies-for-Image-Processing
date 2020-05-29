@@ -6,7 +6,7 @@ This repository contains the source code used for the bachelor thesis *Caching S
 * Recursive Matrix Multiplication
 * Spatial Convolution
 * Fast Marching Method
-* Fast Fourier Transform
+* Iterative Fast Fourier Transform
 
 ### Data Structures
 * Morton ordering
@@ -43,6 +43,7 @@ To test that the algorithms and data structures work as intended, a number of co
 
 * Professor [Jon Sporring] for his excellent supervision with this project.
 * [pycachesim] for allowing to run the cache simulations.
+* See respective sources in `thesis.pdf` for sources used to implement the different algorithms.
 
 [pycachesim]: https://github.com/RRZE-HPC/pycachesim
 [Jon Sporring]: https://github.com/sporring

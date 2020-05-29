@@ -17,7 +17,7 @@ array([[0.08848329, 0.3314824 ],
        [0.83153481, 0.11288104]])
 >>> morton = MortonOrder(ndarray)
 >>> morton
-Morton([[0.08848329, 0.3314824 ],
+morton([[0.08848329, 0.3314824 ],
         [0.83153481, 0.11288104]])
 ```
 
@@ -26,7 +26,7 @@ Morton([[0.08848329, 0.3314824 ],
 >>> morton1 = MortonOrder(shape=(2, 2))
 >>> morton1[1, 1] = 5.5
 >>> morton1
-Morton([[0., 0. ],
+morton([[0., 0. ],
         [0., 5.5]])
 ```
 
@@ -34,7 +34,7 @@ Morton([[0., 0. ],
 ```python
 >>> morton2 = morton1.empty_of_same_shape().fill(5, dtype='int')
 >>> morton2
-Morton([[5, 5],
+morton([[5, 5],
         [5, 5]])
 ```
 
@@ -45,11 +45,11 @@ Morton([[5, 5],
 ```
 
 #### Constraints
-For simplicity's sake, all `CachingDataStructure`s should be perfect squares/cubes/etc. and have a side length that is a power of 2. If you try to initialize one not fulfilling this, you'll get an AssertionError:
+For simplicity's sake, all `CachingDataStructure`s should be hypercubes and have a side length that is a power of 2. If you try to initialize one not fulfilling this, you'll get an AssertionError:
 
 ```python
 >>> MortonOrder(shape=(4, 4, 8))
-AssertionError: MortonOrder should be perfect square/cube/etc. but got the shape (4, 4, 8)
+AssertionError: MortonOrder should be a hypercube but got the shape (4, 4, 8)
 >>> MortonOrder(shape=(3, 3, 3))
 AssertionError: MortonOrder's side length should be a power of 2 but got 3
 ```
@@ -89,18 +89,18 @@ Computes the internal 1D index at a given index in `CachingDataStructure`. Examp
 Returns a generator that yields tuples of the keys in internal linear layout (optimal spatial locality). Example usage:
 
 ```python
->>> morton = MortonOrder(shape=(4, 4))
+>>> morton = MortonOrder(np.random.rand(4, 4))
 >>> list(morton.iter_keys())
 [(0, 0), (1, 0), (0, 1), (1, 1),
  (2, 0), (3, 0), (2, 1), (3, 1),
  (0, 2), (1, 2), (0, 3), (1, 3),
  (2, 2), (3, 2), (2, 3), (3, 3)]
->>> for key in morton_iter_keys():
->>> 	morton[key] *= 2
+>>> for key in morton.iter_keys(): # Setting all values to 0 or 1
+>>> 	morton[key] = 1.0 if morton[key] > 0.5 else 0.0
 ```
 
 #### `to_numpy() -> np.ndarray`:
-Transform the `CachingDataStructure` into the equivalent Numpy array. Example usage:
+Transform the `CachingDataStructure` into the equivalent ndarray. Example usage:
 
 ```python
 >>> MortonOrder([[1, 2], [3, 4]]).to_numpy()
