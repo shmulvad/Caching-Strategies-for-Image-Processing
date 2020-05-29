@@ -7,7 +7,7 @@ from itertools import product, repeat
 import numpy as np
 import json
 
-from helper_funcs import save_fig, MORTON, ROW_ARR, BLOCK_ARR
+from helper_funcs import save_fig, prettify_name, MORTON, ROW_ARR, BLOCK_ARR
 from updater_class import UpdateProgress
 
 from data_structures.caching_data_stucture import CachingDataStructure
@@ -26,6 +26,13 @@ FIG_SAVE_PATH = "../../thesis/figures/props/"
 # Global constants for test. Change these if you want to run another test
 MAX_PROP_LEVEL = 32
 SHAPE = (128, 128, 128)
+MID = SHAPE[0] // 2
+START_POINTS = [(0, 0, 0), (MID, MID, MID)]
+DATA_ARRS = [
+    MortonOrder(shape=SHAPE),
+    RowMajorArray(shape=SHAPE),
+    BlockArray(shape=SHAPE)
+]
 
 # Global constants used for type-safety when accessing properties in
 # dictionary. Do not change
@@ -33,10 +40,8 @@ INF = float("inf")
 XS, YS1, YS2 = "xs", "ys1", "ys2"
 META, MAX_PROP_LEVEL_STR, SHAPE_STR = "meta", "max_prop_level", "shape"
 
-sns.set()
+sns.set(font_scale=1.9)
 matplotlib.rcParams['figure.figsize'] = (1.1*18.0, 1.1*4.8)
-font = {'size': 16}
-matplotlib.rc('font', **font)
 
 
 def indices_for_prop_level_2d(prop_level: int, start_point: tuple) -> set:
@@ -130,13 +135,13 @@ def get_avg_of_prop(data: CachingDataStructure, max_prop_level: int) -> tuple:
     n, dim = data.shape[0], data.dim
     assert max_prop_level < n // 2, \
         "Max prop level should be lower than half of side length"
+    # Generate all possible permutations of points in inner cube
     ranges = tuple(range(max_prop_level, n - max_prop_level)
                    for _ in range(dim))
-    # Generate all possible permutations of points
     points = product(*ranges)
-    total_points = (n - 2 * max_prop_level)**dim
 
     xs, ys1, ys2 = (np.zeros(max_prop_level) for _ in range(3))
+    total_points = (n - 2 * max_prop_level)**dim
     updater = UpdateProgress(total_points)
     updater.update_status(0, data.print_name)
     with concurrent.futures.ProcessPoolExecutor() as executor:
@@ -163,8 +168,7 @@ def total_dist_from_point_helper(data: CachingDataStructure,
     return data.print_name, start_point, xs, ys1, ys2
 
 
-def generate_prop_dist_results(data_arrs: list, start_points: tuple = None) \
-                               -> dict:
+def gen_prop_dist_res(data_arrs: list, start_points: tuple = None) -> dict:
     """
     Generates the propagation data for an array of CachingDataStructures at a
     number of start points
@@ -189,35 +193,7 @@ def generate_prop_dist_results(data_arrs: list, start_points: tuple = None) \
     return results_prop
 
 
-def plot_prop_dist(data_type: str, start_point: tuple, results: dict,
-                   fig_save_path: str = "./", save_figs: bool = True) -> None:
-    """
-    Plots the results for propagation for a given CachingDataStructure at a
-    given start point
-    """
-    shape = results[META][SHAPE_STR]
-    data = results[data_type][str(start_point)]
-    xs, ys1, ys2 = data[XS], data[YS1], data[YS2]
-    dim = len(start_point)
-
-    fig, (ax1, ax2) = plt.subplots(1, 2)
-
-    ax1.plot(xs, ys1)
-    ax1.set(xlabel="Propagation level", ylabel="Summed linear distance")
-
-    ax2.plot(xs, ys2)
-    ax2.set(xlabel="Propagation level",
-            ylabel="Summed linear distance divided by number of voxels")
-
-    title = f"${shape[0]}^{dim}$ {data_type} propagating from {start_point}"
-    fig.suptitle(title)
-    save_fig(f"prop-{data_type}-{start_point[0]}.pdf", fig_save_path,
-             save_figs)
-    plt.show()  # Uncomment this if you want to show plot
-
-
-def generate_avg_prop_dist_results(data_arrs: list,
-                                   max_prop_level: int) -> dict:
+def gen_avg_prop_dist_res(data_arrs: list, max_prop_level: int) -> dict:
     """
     Generates the average of the propagation data for an array of
     CachingDataStructures
@@ -238,56 +214,48 @@ def generate_avg_prop_dist_results(data_arrs: list,
     return results_avg_prop
 
 
-def plot_avg_prop_dist(data_type: str, results: dict,
-                       fig_save_path: str = "./",
-                       save_figs: bool = True) -> None:
+def plot_prop_dist(results: dict, start_point: tuple,
+                   fig_save_path: str = "./",
+                   save_figs: bool = True) -> None:
     """
-    Plots the results for average propagation for a given CachingDataStructure
-    assuming the results have already been generated
+    Plots the results for propagation for all CachingDataStructure types at a
+    given start point. If no start_point is none, the average will be
+    plotted instead
     """
-    data = results[data_type]
-    xs, ys1, ys2 = data[XS], data[YS1], data[YS2]
+    use_avg = start_point is None
+    label_start = "Average\nsummed" if use_avg else "Summed"
+    ys1_label = f"{label_start} linear distance"
+    ys2_label = f"{label_start} linear distance\ndivided by number of voxels"
 
-    max_prop_level = results[META][MAX_PROP_LEVEL_STR]
-    shape = results[META][SHAPE_STR]
-    dim = len(shape)
+    fig, axes = plt.subplots(2, 3, figsize=(17, 10),
+                             sharex="col", sharey="row",
+                             gridspec_kw={'hspace': 0.15, 'wspace': 0.05})
+    for axes_row, use_ys1 in zip(axes, [True, False]):
+        for ax, data_typ in zip(axes_row, [MORTON, ROW_ARR, BLOCK_ARR]):
+            data = results[data_typ] if use_avg \
+                else results[data_typ][str(start_point)]
 
-    fig, (ax1, ax2) = plt.subplots(1, 2)
-    ax1.plot(xs, ys1)
-    ax1.set(xlabel="Propagation level", ylabel="Summed linear distance")
-    ax2.plot(xs, ys2)
-    ax2.set(xlabel="Propagation level",
-            ylabel="Summed linear distance divided by number of voxels")
+            xs, ys = data[XS], data[YS1 if use_ys1 else YS2]
+            ax.plot(xs, ys)
+            ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
+            ax.set(xlabel="Propagation level",
+                   ylabel=(ys1_label if use_ys1 else ys2_label))
+            if use_ys1:
+                ax.set_title(prettify_name(data_typ))
+            ax.label_outer()
 
-    start_point = tuple(max_prop_level for _ in range(dim))
-    end_point = tuple(shape[0] - max_prop_level - 1
-                      for _ in range(dim))
-    title = f"${shape[0]}^{dim}$ {data_type} " + \
-            f"from ${start_point}-{end_point}$ avg dist"
-    fig.suptitle(title)
-    save_fig(f"prop-avg-{data_type}.pdf", fig_save_path, save_figs)
-    plt.show()  # Uncomment this if you want to show plot
+    filename = f"prop-dist-{'avg' if use_avg else start_point[0]}.pdf"
+    save_fig(filename, fig_save_path, save_figs)
+    plt.show()
 
 
 if __name__ == "__main__":
-    with open('results/prop-dist-avg.json', 'r') as f:
-        results = json.load(f)
-
     if GENERATE_NEW_RESULTS:
-        MID = SHAPE[0] // 2
-        START_POINTS = [(0, 0, 0), (MID, MID, MID)]
-        DATA_ARRS = [
-            MortonOrder(shape=SHAPE),
-            RowMajorArray(shape=SHAPE),
-            BlockArray(shape=SHAPE)
-        ]
-
-        results_prop = generate_prop_dist_results(DATA_ARRS, START_POINTS)
+        results_prop = gen_prop_dist_res(DATA_ARRS, START_POINTS)
         with open('results/prop-dist.json', 'w') as f:
             json.dump(results_prop, f, indent=4)
 
-        results_avg_prop = generate_avg_prop_dist_results(DATA_ARRS,
-                                                          MAX_PROP_LEVEL)
+        results_avg_prop = gen_avg_prop_dist_res(DATA_ARRS, MAX_PROP_LEVEL)
         with open('results/prop-dist-avg.json', 'w') as f:
             json.dump(results_avg_prop, f, indent=4)
 
@@ -297,9 +265,7 @@ if __name__ == "__main__":
         results_avg_prop = json.load(f)
 
     # Plotting
-    for data_type in [MORTON, ROW_ARR, BLOCK_ARR]:
-        for start_point in START_POINTS:
-            plot_prop_dist(data_type, start_point, results_prop,
-                           FIG_SAVE_PATH, SAVE_FIGURES_TO_DISK)
-        plot_avg_prop_dist(data_type, results_avg_prop,
-                           FIG_SAVE_PATH, SAVE_FIGURES_TO_DISK)
+    for start_point in START_POINTS:
+        plot_prop_dist(results_prop, start_point,
+                       FIG_SAVE_PATH, SAVE_FIGURES_TO_DISK)
+    plot_prop_dist(results_avg_prop, None, FIG_SAVE_PATH, SAVE_FIGURES_TO_DISK)
