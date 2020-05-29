@@ -1,6 +1,7 @@
 import numpy as np
 from itertools import product
 from typing import Generator
+from cachesim import CacheSimulator
 
 from helper_funcs import BLOCK_ARR
 from data_structures.caching_data_stucture import CachingDataStructure
@@ -11,7 +12,8 @@ class BlockArray(CachingDataStructure):
     print_name = BLOCK_ARR
     type_name = "BlockArray"
 
-    def __init__(self, picture=None, shape=None, K=8, cache=None, offset=0):
+    def __init__(self, picture: np.ndarray = None, shape: tuple = None,
+                 cache: CacheSimulator = None, offset: int = 0, K: int = 8):
         assert not (picture is None and shape is None), \
             "You have to set *either* picture or shape"
         assert not (picture is not None and shape is not None), \

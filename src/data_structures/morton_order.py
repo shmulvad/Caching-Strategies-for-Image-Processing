@@ -1,6 +1,7 @@
 import numpy as np
 from itertools import product
 from typing import Generator
+from cachesim import CacheSimulator
 
 from helper_funcs import MORTON
 from data_structures.caching_data_stucture import CachingDataStructure
@@ -11,8 +12,8 @@ class MortonOrder(CachingDataStructure):
     print_name = MORTON
     type_name = "MortonOrder"
 
-    def __init__(self, picture: np.ndarray = None,
-                 shape: tuple = None, cache=None, offset: int = 0):
+    def __init__(self, picture: np.ndarray = None, shape: tuple = None,
+                 cache: CacheSimulator = None, offset: int = 0):
         assert not (picture is None and shape is None), \
             "You have to set *either* picture or shape"
         assert not (picture is not None and shape is not None), \

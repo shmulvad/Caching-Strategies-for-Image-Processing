@@ -1,18 +1,19 @@
 from abc import ABC, abstractmethod
-from typing import Any, Generator
 from itertools import product
 from math import log2
+from cachesim import CacheSimulator
 import numpy as np
+from typing import Any, Generator
 
 
 class CachingDataStructure(ABC):
     shape: tuple
     dim: int
     offset: int
-    print_name: str
-    type_name: str
+    print_name: str  # A name without any capitals and spaces such as "morton"
+    type_name: str   # A pretty name such as "MortonOrder"
     data: np.ndarray = None
-    cache = None
+    cache: CacheSimulator = None
 
     def __init__(self):
         """
@@ -31,7 +32,7 @@ class CachingDataStructure(ABC):
         """
         idx = self.internal_index(*key)
         if self.cache:
-            self.cache.store(8*(idx + self.offset), length=8)
+            self.cache.store(8 * (idx + self.offset), length=8)
         self.data.__setitem__(idx, value)
 
     def __getitem__(self, key: tuple) -> Any:
@@ -41,7 +42,7 @@ class CachingDataStructure(ABC):
         """
         idx = self.internal_index(*key)
         if self.cache:
-            self.cache.load(8*(idx + self.offset), length=8)
+            self.cache.load(8 * (idx + self.offset), length=8)
         return self.data.__getitem__(idx)
 
     def __str__(self) -> str:

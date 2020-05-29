@@ -1,6 +1,7 @@
 import numpy as np
 from itertools import product
 from typing import Generator
+from cachesim import CacheSimulator
 
 from helper_funcs import ROW_ARR
 from data_structures.caching_data_stucture import CachingDataStructure
@@ -12,7 +13,8 @@ class RowMajorArray(CachingDataStructure):
     print_name = ROW_ARR
     type_name = "RowMajorArray"
 
-    def __init__(self, picture=None, shape=None, cache=None, offset=0):
+    def __init__(self, picture: np.ndarray = None, shape: tuple = None,
+                 cache: CacheSimulator = None, offset: int = 0):
         assert not (picture is None and shape is None), \
             "You have to set *either* picture or shape"
         assert not (picture is not None and shape is not None), \
