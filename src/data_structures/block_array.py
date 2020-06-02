@@ -30,6 +30,8 @@ class BlockArray(CachingDataStructure):
             self.pow = int(np.log2(self.K))
             self.__set_vals__(picture)
         else:
+            if isinstance(shape, int):
+                shape = (shape,)
             self.dim = len(shape)
             self.__set_shape__(shape)
             self.__set_K__(K)
@@ -115,9 +117,9 @@ class BlockArray(CachingDataStructure):
         block_idx = block_y + block_x * self.block_shape[1]
 
         # Equal to modulus given S is a power of 2, i.e. x % 16 = x & (16 - 1)
-        s_minus_one = self.K - 1
-        idx_x = x & s_minus_one
-        idx_y = y & s_minus_one
+        k_minus_one = self.K - 1
+        idx_x = x & k_minus_one
+        idx_y = y & k_minus_one
 
         return self.K * (self.K * block_idx + idx_x) + idx_y
 
@@ -134,10 +136,10 @@ class BlockArray(CachingDataStructure):
             (self.block_shape[1] * block_x + block_y) + block_z
 
         # Equal to modulus given S is a power of 2, i.e. x % 16 = x & (16 - 1)
-        s_minus_one = self.K - 1
-        idx_x = x & s_minus_one
-        idx_y = y & s_minus_one
-        idx_z = z & s_minus_one
+        k_minus_one = self.K - 1
+        idx_x = x & k_minus_one
+        idx_y = y & k_minus_one
+        idx_z = z & k_minus_one
         return self.K * (self.K * (self.K * block_idx + idx_x) + idx_y) + idx_z
 
     def internal_index_general(self, *args: int) -> int:
@@ -155,8 +157,8 @@ class BlockArray(CachingDataStructure):
                         for i in range(self.dim))
 
         # Equal to modulus given S is a power of 2, i.e. x % 16 = x & (16 - 1)
-        s_minus_one = self.K - 1
-        idxs = [val & s_minus_one for val in args]
+        k_minus_one = self.K - 1
+        idxs = [val & k_minus_one for val in args]
 
         return block_idx * self.K**self.dim + \
             sum(idxs[i] * self.K**(self.dim-1-i) for i in range(self.dim))

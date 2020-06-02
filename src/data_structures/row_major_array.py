@@ -7,8 +7,7 @@ from helper_funcs import ROW_ARR
 from data_structures.caching_data_stucture import CachingDataStructure
 
 
-# A decorator for the NdArray that implements ICachingDataStructure to allow it
-# to be used in the same functions
+# A row major array that implements ICachingDataStructure
 class RowMajorArray(CachingDataStructure):
     print_name = ROW_ARR
     type_name = "RowMajorArray"
@@ -28,6 +27,8 @@ class RowMajorArray(CachingDataStructure):
             self.__set_internal_index_func__()
             self.__set_vals__(picture)
         else:
+            if isinstance(shape, int):
+                shape = (shape,)
             self.dim = len(shape)
             self.__set_shape__(shape)
             self.__set_internal_index_func__()

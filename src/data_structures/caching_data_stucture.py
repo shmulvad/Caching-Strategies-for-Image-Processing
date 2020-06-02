@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from itertools import product
 from math import log2
-from cachesim import CacheSimulator
 import numpy as np
 from typing import Any, Generator
+from cachesim import CacheSimulator
 
 
 class CachingDataStructure(ABC):
