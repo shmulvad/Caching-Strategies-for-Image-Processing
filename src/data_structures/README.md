@@ -1,4 +1,4 @@
-## Initialzing a CachingDataStructure
+## Initializing a CachingDataStructure
 Examples below are shown for `MortonOrder`, but it is the same syntax for `RowMajorArray` and `BlockArray`.
 
 ```python
@@ -100,7 +100,7 @@ Returns a generator that yields tuples of the keys in internal linear layout (op
 ```
 
 #### `to_numpy() -> np.ndarray`:
-Transform the `CachingDataStructure` into the equivalent ndarray. Example usage:
+Transform the `CachingDataStructure` into the equivalent `np.ndarray`. Example usage:
 
 ```python
 >>> MortonOrder([[1, 2], [3, 4]]).to_numpy()
