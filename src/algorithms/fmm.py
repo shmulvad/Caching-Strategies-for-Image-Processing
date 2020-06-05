@@ -1,4 +1,5 @@
 from heapq import heapify, heappush, heappop
+from typing import Tuple
 import numpy as np
 import math
 from data_structures.caching_data_stucture import CachingDataStructure
@@ -13,14 +14,17 @@ class Neighbor(object):
     A Neighbour to be used in min-heap.
     Defines the time value, coordinates and if it is valid
     """
-    def __init__(self, min_val: float, coords: list, valid: bool):
+    def __init__(self, min_val: float, coords: list,
+                 valid: bool, prev: tuple = None):
         self.min_val = min_val
         self.coords = coords
         self.valid = valid
+        self.prev = prev
 
     def __repr__(self) -> str:
         """Returns a string representation of the Neighbor"""
-        return f"Neighbor({self.min_val:.3f}, {self.coords}, {self.valid})"
+        return f"Neighbor({self.min_val:.3f}, {self.coords}, " + \
+               f"{self.valid}, {self.prev})"
 
     def __lt__(self, other: 'Neighbor') -> bool:
         """
@@ -28,6 +32,18 @@ class Neighbor(object):
         Required to be able to use in min-heap
         """
         return self.min_val < other.min_val
+
+
+def get_path(neighbors: CachingDataStructure, end_point: tuple) -> np.ndarray:
+    """
+    Can be called on the returned 'neighbors' in 2D. Returns the path from the
+    start point to the supplied end_point
+    """
+    path, point = [], end_point
+    while point is not None:
+        path.append(list(point))
+        point = neighbors[point].prev
+    return np.array(path[::-1])
 
 
 ###########################
@@ -42,31 +58,38 @@ def safe_get_times_2d(times: CachingDataStructure, i: int, j: int) -> float:
 
 def calc_time_2d(speed_func_arr: CachingDataStructure,
                  times: CachingDataStructure,
-                 i: int, j: int) -> float:
+                 i: int, j: int) -> Tuple[float, tuple]:
     """
-    Calculates the time value for a newly added neighbor in 2D.
+    Calculates the time value for a newly added neighbor in 2D. Returns both
+    the time value and from which neighbor it 'came from'.
     Implementation based on
     https://en.wikipedia.org/wiki/Eikonal_equation#Numerical_approximation
     """
-    u_i = min(
-        safe_get_times_2d(times, i - 1, j),
-        safe_get_times_2d(times, i + 1, j)
-    )
-    u_j = min(
-        safe_get_times_2d(times, i, j - 1),
-        safe_get_times_2d(times, i, j + 1)
-    )
+    # Find minimum i and j
+    u_i_arr = np.array([
+        safe_get_times_2d(times, i - 1, j), safe_get_times_2d(times, i + 1, j)
+    ])
+    u_j_arr = np.array([
+        safe_get_times_2d(times, i, j - 1), safe_get_times_2d(times, i, j + 1)
+    ])
+    u_i_idx, u_j_idx = np.argmin(u_i_arr), np.argmin(u_j_arr)
+
+    # Save values of min i and j in variables
+    u_i, u_j = u_i_arr[u_i_idx], u_j_arr[u_j_idx]
     u_sum = u_i + u_j
     diff = abs(u_i - u_j)
 
-    speed_val = speed_func_arr[i, j] + EPS
-    reciproc_speed_func_elm = 1.0 / speed_val
+    reciproc_speed_func_elm = 1.0 / (speed_func_arr[i, j] + EPS)
     reciproc_speed_func_elm_2 = reciproc_speed_func_elm ** 2
 
-    return 0.5 * (u_sum + np.sqrt(u_sum*u_sum - 2.0 *
-                  (u_i * u_i + u_j * u_j - reciproc_speed_func_elm_2))) \
-        if diff <= reciproc_speed_func_elm \
-        else reciproc_speed_func_elm + min(u_i, u_j)
+    prev_i, prev_j = [i - 1, i + 1][u_i_idx], [j - 1, j + 1][u_j_idx]
+    if diff <= reciproc_speed_func_elm:
+        return 0.5 * (u_sum + np.sqrt(u_sum ** 2 - 2.0 *
+                      (u_i * u_i + u_j * u_j - reciproc_speed_func_elm_2))), \
+               (prev_i, prev_j)
+    else:
+        prev_idx = (prev_i, j) if u_i < u_j else (i, prev_j)
+        return reciproc_speed_func_elm + min(u_i, u_j), prev_idx
 
 
 def get_neighbors_2d(status: CachingDataStructure, i: int, j: int) -> list:
@@ -82,12 +105,13 @@ def get_neighbors_2d(status: CachingDataStructure, i: int, j: int) -> list:
 
 
 def fmm_2d(speed_func_arr: CachingDataStructure,
-           start_point: tuple,
-           end_point: tuple = None) -> CachingDataStructure:
+           start_point: tuple, end_point: tuple = None)\
+             -> Tuple[CachingDataStructure, CachingDataStructure]:
     """
     Computes the FMM for a 2D speed function and a given start point. If
     an end point is supplied, only the necessary coordinates will be computed.
-    Otherwise all coordinates
+    Otherwise all coordinates. Returns the time array and an array of neighbors
+    that can be used to find the path to a given end point
     """
     i, j = start_point
 
@@ -116,12 +140,12 @@ def fmm_2d(speed_func_arr: CachingDataStructure,
 
         # Calculate arrival times of newly added neighbors
         for (x, y) in coords:
-            val_time = calc_time_2d(speed_func_arr, times, x, y)
+            val_time, prev = calc_time_2d(speed_func_arr, times, x, y)
             if val_time < times[x, y]:
                 if heap_pointers[x, y].valid:
                     heap_pointers[x, y].valid = False
                 times[x, y] = val_time
-                heap_elm = Neighbor(val_time, [x, y], True)
+                heap_elm = Neighbor(val_time, [x, y], True, prev)
                 heap_pointers[x, y] = heap_elm
                 heappush(neighbors, heap_elm)
 
@@ -134,7 +158,7 @@ def fmm_2d(speed_func_arr: CachingDataStructure,
 
         # Add coordinate of smallest value to known
         status[i, j] = KNOWN
-    return times
+    return times, heap_pointers
 
 
 ###########################
